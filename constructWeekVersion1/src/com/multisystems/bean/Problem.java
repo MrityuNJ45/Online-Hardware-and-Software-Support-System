@@ -8,6 +8,7 @@ public class Problem {
 	private String ptype;
 	private int empId;
 	private int engId;
+	private boolean solved;
 
 	public int getPid() {
 		return pid;
@@ -57,7 +58,15 @@ public class Problem {
 		this.engId = engId;
 	}
 
-	public Problem(int pid, String pname, String pdesc, String ptype, int empId, int engId) {
+	public boolean isSolved() {
+		return solved;
+	}
+
+	public void setSolved(boolean solved) {
+		this.solved = solved;
+	}
+
+	public Problem(int pid, String pname, String pdesc, String ptype, int empId, int engId, boolean solved) {
 		super();
 		this.pid = pid;
 		this.pname = pname;
@@ -65,12 +74,13 @@ public class Problem {
 		this.ptype = ptype;
 		this.empId = empId;
 		this.engId = engId;
+		this.solved = solved;
 	}
 
 	@Override
 	public String toString() {
 		return "Problem [pid=" + pid + ", pname=" + pname + ", pdesc=" + pdesc + ", ptype=" + ptype + ", empId=" + empId
-				+ ", engId=" + engId + "]";
+				+ ", engId=" + engId + ", solved=" + solved + "]";
 	}
 
 	public Problem() {
