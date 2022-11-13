@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.multisystems.bean.Problem;
+import com.multisystems.exceptions.EngineerException;
 import com.multisystems.exceptions.ProblemException;
 import com.multisystems.utility.DBUtil;
 
@@ -21,7 +22,7 @@ public class EngineerDaoImpl implements EngineerDao{
 		
 		try (Connection conn = DBUtil.provideConnection()){
 			
-			PreparedStatement ps = conn.prepareStatement("select eId from employee where username = ?");
+			PreparedStatement ps = conn.prepareStatement("select engId from engineer where username = ?");
 			
 			ps.setString(1, uname);
 			
@@ -30,11 +31,11 @@ public class EngineerDaoImpl implements EngineerDao{
 			int i = 0 ;
 			if(rs.next()) {
 				
-				i = rs.getInt("eid");
+				i = rs.getInt("engId");
 				
 			}
 			
-			ps = conn.prepareStatement("select * from problems where empId = ?");
+			ps = conn.prepareStatement("select * from problems where engId = ?");
 			ps.setInt(1, i);
 			
 			rs = ps.executeQuery();
@@ -102,6 +103,59 @@ public class EngineerDaoImpl implements EngineerDao{
 			throw new ProblemException(e.getMessage());
 		}
 		
+		
+		return message;
+	}
+
+	@Override
+	public String loginEngineer(String username, String password) throws EngineerException {
+		
+		String message = "Not Logged In..";
+		
+		try (Connection conn = DBUtil.provideConnection()){
+			
+			PreparedStatement ps = conn.prepareStatement("select * from engineer where username = ? and password = ?");
+			ps.setString(1, username);
+			ps.setString(2, password);
+			
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				message = "Login Successfully..";
+			}else {
+				message = "Wrong Credentials...";
+			}
+			
+		} catch (SQLException e) {
+			
+			throw new EngineerException(e.getMessage());
+			
+		}
+		
+		
+		
+		return message;
+	}
+
+	@Override
+	public String changePassword(int i, String newPass) throws EngineerException {
+		
+		String message = "Not changed...";
+		try (Connection conn = DBUtil.provideConnection()){
+			
+			PreparedStatement ps = conn.prepareStatement("update engineer set password = ? where engId = ?");
+			ps.setString(1, newPass);
+			ps.setInt(2, i);
+			
+			int r = ps.executeUpdate();
+			if(r > 0) {
+				message = "Password Changed...";
+			}
+			
+		} catch (SQLException e) {
+			
+			throw new EngineerException(e.getMessage());
+			
+		}
 		
 		return message;
 	}

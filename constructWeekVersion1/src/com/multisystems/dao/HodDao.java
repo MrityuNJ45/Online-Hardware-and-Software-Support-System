@@ -17,4 +17,6 @@ public interface HodDao {
 	
 	public List<Problem> getAllProblems() throws ProblemException;
 	
+	public String assignProblemToEng(int eid, int pid) throws ProblemException;
+	
 }

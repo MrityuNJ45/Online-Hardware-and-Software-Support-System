@@ -14,116 +14,110 @@ import com.multisystems.exceptions.EngineerException;
 import com.multisystems.exceptions.ProblemException;
 import com.multisystems.utility.DBUtil;
 
-public class EmployeeDaoImpl implements EmployeeDao{
+public class EmployeeDaoImpl implements EmployeeDao {
 
 	@Override
 	public String registerEmployee(Employee e) throws EmployeeException {
-		
+
 		String message = "Not Registered....";
-		
-		try (Connection conn = DBUtil.provideConnection()){
-			
+
+		try (Connection conn = DBUtil.provideConnection()) {
+
 			PreparedStatement ps = conn.prepareStatement("insert into problems values (?,?,?,?,?)");
 			ps.setInt(1, e.getEid());
 			ps.setString(2, e.getEname());
 			ps.setString(3, e.getDept());
 			ps.setString(4, e.getUsername());
 			ps.setString(5, e.getPassword());
-			
+
 			int x = ps.executeUpdate();
-			
-			if(x > 0) {
+
+			if (x > 0) {
 				message = "Employee Registered Successfully...";
 			}
-			
-			
+
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
-		
+
 		return message;
 	}
-      @Override
+
+	@Override
 	public int registerComplain(Problem p) throws ProblemException {
-		
+
 		int id = 0;
-		
-		try (Connection conn = DBUtil.provideConnection()){
-			
-			PreparedStatement ps = conn.prepareStatement("insert into problems (pname,pdesc,ptype,empId) values (?,?,?,?)");
-			
+
+		try (Connection conn = DBUtil.provideConnection()) {
+
+			PreparedStatement ps = conn
+					.prepareStatement("insert into problems (pname,pdesc,ptype,empId) values (?,?,?,?)");
+
 			ps.setString(1, p.getPname());
-			ps.setString(2,p.getPdesc());
+			ps.setString(2, p.getPdesc());
 			ps.setString(3, p.getPtype());
 			ps.setInt(4, p.getEmpId());
-			
+
 			int x = ps.executeUpdate();
-			if(x > 0) {
-				
+			if (x > 0) {
+
 				ps = conn.prepareStatement("select last_insert_id()");
 				ResultSet rs = ps.executeQuery();
-				if(rs.next()) {
+				if (rs.next()) {
 					id = rs.getInt("last_insert_id()");
 				}
-				
+
 			}
-			
-			
-			
+
 		} catch (SQLException e) {
 			throw new ProblemException(e.getMessage());
 		}
-		
-		
+
 		return id;
 	}
+
 	@Override
 	public String getProblemStatus(int id) throws ProblemException {
-		
+
 		String name = "Not got...";
-		
-		try (Connection conn = DBUtil.provideConnection()){
-			
+
+		try (Connection conn = DBUtil.provideConnection()) {
+
 			PreparedStatement ps = conn.prepareStatement("select engId from problems where pid = ?");
-			
+
 			ps.setInt(1, id);
-			
+
 			ResultSet rs = ps.executeQuery();
-			if(rs.next()) {
+			if (rs.next()) {
 				int i = rs.getInt("engId");
 				ps = conn.prepareStatement("select engName from engineer where engId = ?");
 				ps.setInt(1, i);
 				ResultSet rs1 = ps.executeQuery();
-				if(rs1.next()) {
+				if (rs1.next()) {
 					name = rs1.getString("engName");
 				}
 			}
-			
-			
-			
-			
+
 		} catch (SQLException e) {
 			throw new ProblemException(e.getMessage());
 		}
-		
-		
-		
-		
+
 		return name;
 	}
+
 	@Override
 	public List<Problem> getProblemsById(int id) throws ProblemException {
-		
+
 		List<Problem> list = new ArrayList<>();
-		
-		try (Connection conn = DBUtil.provideConnection()){
-			
+
+		try (Connection conn = DBUtil.provideConnection()) {
+
 			PreparedStatement ps = conn.prepareStatement("select * from problems where empId = ?");
 			ps.setInt(1, id);
-			
+
 			ResultSet rs = ps.executeQuery();
-			while(rs.next()) {
-				
+			while (rs.next()) {
+
 				int i = rs.getInt("pid");
 				String name = rs.getString("pname");
 				String desc = rs.getString("pdesc");
@@ -131,28 +125,74 @@ public class EmployeeDaoImpl implements EmployeeDao{
 				int eid = rs.getInt("empId");
 				int engId = rs.getInt("engId");
 				boolean solved = rs.getBoolean("solved");
-				
-				Problem p = new Problem(i,name,desc,type,eid,engId,solved);
+
+				Problem p = new Problem(i, name, desc, type, eid, engId, solved);
 				list.add(p);
-				
+
 			}
-			
-			
+
 		} catch (SQLException e) {
 			throw new ProblemException(e.getMessage());
 		}
-		
-		if(list.size() == 0) {
+
+		if (list.size() == 0) {
 			throw new ProblemException("No record found...");
+		}
+
+		return list;
+
+	}
+
+	@Override
+	public String loginEmployee(String username, String password) throws EmployeeException {
+
+		String message = "Not Logged In..";
+
+		try (Connection conn = DBUtil.provideConnection()) {
+
+			PreparedStatement ps = conn.prepareStatement("select * from employee where username = ? and password = ?");
+			ps.setString(1, username);
+			ps.setString(2, password);
+
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				message = "Login Successfully..";
+			} else {
+				message = "Wrong Credentials...";
+			}
+
+		} catch (SQLException e) {
+
+			throw new EmployeeException(e.getMessage());
+
+		}
+
+		return message;
+
+	}
+
+	@Override
+	public String updatePassword(int i, String newPass) throws EmployeeException {
+		
+		String message = "Not Updated";
+		
+		try (Connection conn = DBUtil.provideConnection()){
+			
+			PreparedStatement ps = conn.prepareStatement("update employee set password = ? where eId = ?");
+			ps.setString(1, newPass);
+			ps.setInt(2, i);
+			
+			int r = ps.executeUpdate();
+			if(r > 0) {
+				message = "Password Updated...";
+			}
+			
+		} catch (SQLException e) {
+			throw new EmployeeException(e.getMessage());
 		}
 		
 		
-		return list;
-		
+		return message;
 	}
-	
-	
-	
-	
 
 }

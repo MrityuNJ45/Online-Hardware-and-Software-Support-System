@@ -18,4 +18,8 @@ public interface EmployeeDao {
 	
 	public List<Problem> getProblemsById(int id) throws ProblemException;
 	
+	public String loginEmployee(String username, String password) throws EmployeeException;
+	
+	public String updatePassword(int i, String newPass) throws EmployeeException;
+	
 }
