@@ -21,7 +21,13 @@ public class GetAllProblemsById {
 		try {
 			List<Problem> list = dao.getProblemsById(n);
 			for(Problem l : list) {
-				System.out.println(l);
+				
+				System.out.println("Problem ID : " + l.getPid());
+				System.out.println("Problem Name : " + l.getPname());
+				System.out.println("Problem Desc : " + l.getPdesc());
+				System.out.println("");
+				
+				
 			}
 		} catch (ProblemException e) {
 			// TODO Auto-generated catch block

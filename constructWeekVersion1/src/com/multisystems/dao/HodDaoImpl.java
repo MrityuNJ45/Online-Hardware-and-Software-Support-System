@@ -126,8 +126,9 @@ public class HodDaoImpl implements HodDao {
 				String type = rs.getString("ptype");
 				int eid = rs.getInt("empId");
 				int engId = rs.getInt("engId");
+				boolean solved = rs.getBoolean("solved");
 				
-				Problem p = new Problem(i,name,desc,type,eid,engId);
+				Problem p = new Problem(i,name,desc,type,eid,engId,solved);
 				list.add(p);
 				
 				
@@ -147,6 +148,33 @@ public class HodDaoImpl implements HodDao {
 		
 		
 		return list;
+	}
+
+	@Override
+	public String assignProblemToEng(int eid, int pid) throws ProblemException {
+		
+		String message = "Not assigned..";
+		
+		try (Connection conn = DBUtil.provideConnection()){
+			
+			PreparedStatement ps = conn.prepareStatement("update problems set engId = ? where pid = ?");
+			ps.setInt(1, eid);
+			ps.setInt(2, pid);
+			
+			int i = ps.executeUpdate();
+			
+			if(i > 0) {
+				message = "Problem assigned..";
+			}
+			
+		} catch (SQLException e) {
+			
+			throw new ProblemException(e.getMessage());
+			
+		}
+		
+		
+		return message;
 	}
 
 }
