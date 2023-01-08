@@ -36,6 +36,9 @@ status of the problem.
 
 ![Er Diagram](https://i.ibb.co/51kLCqW/er-Diagramfor-JDBC.png)
 
+## Flow Chart
+
+![Flow Chart](https://i.ibb.co/fr5XMfy/flow-chart-1.png)
 
 ## Feedback
 
