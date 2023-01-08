@@ -38,7 +38,7 @@ status of the problem.
 
 ## Flow Chart
 
-![Flow Chart](https://i.ibb.co/fr5XMfy/flow-chart-1.png)
+![Flow Chart](https://i.ibb.co/SN8x6Cg/flow-chart-1.jpg)
 
 ## Feedback
 
