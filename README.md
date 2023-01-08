@@ -4,11 +4,13 @@
 
 # Multi Systems (Online Hardware and Software Support System)
 
-This is an Online Hardware and Software Support System (console based) .
+This is an Online Hardware and Software Support System (console based).
 Through which any employee of the firm can register problems which 
-they may be facing, then the admin will alot the problem to one of the 
+they may be facing, then the HOD will alot the problem to one of the 
 engineers and when the problem is solved then the engineer would update the
 status of the problem.
+
+
 
 
 ## Features
