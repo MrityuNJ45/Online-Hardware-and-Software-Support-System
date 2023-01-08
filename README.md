@@ -42,7 +42,7 @@ status of the problem.
 
 ## Feedback
 
-If you have any feedback, please reach out to us at mrityunjaysorcar@gmail.com
+If you have any feedback, please reach out to mrityunjaysorcar@gmail.com
 
 
 ## Author
