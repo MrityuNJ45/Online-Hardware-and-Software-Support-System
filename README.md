@@ -40,6 +40,9 @@ status of the problem.
 
 ![Flow Chart](https://i.ibb.co/SN8x6Cg/flow-chart-1.jpg)
 
+## Explanation Video
+- [Click Here](https://drive.google.com/file/d/1-KVApkCDE4OEcTG_0e0unT_HEO5uZvyW/view?usp=sharing)
+
 ## Feedback
 
 If you have any feedback, please reach out to mrityunjaysorcar@gmail.com
